@@ -16,7 +16,7 @@ REQUIREMENT_APPS = [
 ]
 
 PROJECT_APPS = [
-    
+    'rest_framework',
 ]
 
 INSTALLED_APPS = REQUIREMENT_APPS + PROJECT_APPS
