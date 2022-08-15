@@ -17,6 +17,8 @@ REQUIREMENT_APPS = [
 
 PROJECT_APPS = [
     'rest_framework',
+    'corsheaders',
+    'evrika.apps.EvrikaConfig',
 ]
 
 INSTALLED_APPS = REQUIREMENT_APPS + PROJECT_APPS
@@ -29,6 +31,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -75,6 +78,10 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# API settings
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Static files (CSS, JavaScript, Images)
