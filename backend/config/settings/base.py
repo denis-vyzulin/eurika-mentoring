@@ -17,6 +17,7 @@ REQUIREMENT_APPS = [
 
 PROJECT_APPS = [
     'rest_framework',
+    'evrika.apps.EvrikaConfig',
 ]
 
 INSTALLED_APPS = REQUIREMENT_APPS + PROJECT_APPS
