@@ -126,7 +126,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
-        return '%s %s' % (self.get_full_name(), self.email)
+        return self.get_full_name()
 
 
 class University(models.Model):
