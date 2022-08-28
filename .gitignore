@@ -15,6 +15,7 @@ venv/
 
 # Media files #
 /media/*
+/static/*
 
 # Node stuff #
 .DS_Store

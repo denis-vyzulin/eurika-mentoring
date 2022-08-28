@@ -3,7 +3,7 @@
 */
 
 /* VARIABLE DEFINITIONS */
-html[data-theme="light"],
+html,
 :root {
     --primary: #8079FA;
     --secondary: #5048E5;
