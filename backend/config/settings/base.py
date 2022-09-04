@@ -17,6 +17,7 @@ REQUIREMENT_APPS = [
 
 PROJECT_APPS = [
     'rest_framework',
+    'django_extensions',
     'evrika.apps.EvrikaConfig',
 ]
 
@@ -38,7 +39,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR.joinpath('templates'),
             BASE_DIR / 'evrika/templates',
         ],
         'APP_DIRS': True,

@@ -1,10 +1,12 @@
 from django.db import models
+from django_extensions.db.models import TimeStampedModel
 
-from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
+
 from django.utils import timezone
 from django.core.mail import send_mail
+from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
@@ -61,7 +63,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
-        _('email address'),
+        _('Email address'),
         max_length=255,
         unique=True,
         help_text=_(
@@ -74,13 +76,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     # password field supplied by AbstractBaseUser
 
-    username = models.CharField(_('name'), max_length=30)
-    surname = models.CharField(_('surname'), max_length=30)
-    patronymic = models.CharField(_('patronymic'), max_length=30)
+    username = models.CharField(_('Name'), max_length=30)
+    surname = models.CharField(_('Surname'), max_length=30)
+    patronymic = models.CharField(_('Patronymic'), max_length=30)
     
     # last_login field supplied by AbstractBaseUser
     is_active = models.BooleanField(
-        _('active'),
+        _('Active'),
         default=True,
         help_text=_(
             'Designates whether this user should be treated as active.'
@@ -88,13 +90,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         )
     )
     is_staff = models.BooleanField(
-        _('staff status'),
+        _('Staff status'),
         default=False,
         help_text=_(
             'Designates whether the user can log into this admin site.'
         )
     )
-    date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    date_joined = models.DateTimeField(_("Date joined"), default=timezone.now)
 
     objects = UserManager()
 
@@ -103,8 +105,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username', 'surname', 'patronymic']
 
     class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
+        verbose_name = _('User')
+        verbose_name_plural = _('Users')
         
     def get_full_name(self):
         '''
@@ -130,11 +132,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class University(models.Model):
-    name = models.CharField(_('name of unversity'), max_length=128, db_index=True)
+    name = models.CharField(_('Name of university'), max_length=128, db_index=True)
 
     class Meta:
-        verbose_name = _('university')
-        verbose_name_plural = _('universities')
+        verbose_name = _('University')
+        verbose_name_plural = _('Universities')
 
     def __str__(self):
         return self.name
@@ -144,26 +146,34 @@ class Mentor(User):
     university_id = models.ForeignKey(University, on_delete=models.SET_NULL, null=True)
 
     class Meta:
-        verbose_name = _('mentor')
-        verbose_name_plural = _('mentors')
+        verbose_name = _('Mentor')
+        verbose_name_plural = _('Mentors')
 
     def __str__(self):
         return self.get_full_name()
 
 
 class School(models.Model):
-    name = models.CharField(_('name of school'), max_length=128)
+    name = models.CharField(_('Name of school'), max_length=128)
 
     class Meta:
-        verbose_name = _('school')
-        verbose_name_plural = _('schools')
+        verbose_name = _('School')
+        verbose_name_plural = _('Schools')
 
     def __str__(self):
         return self.name
 
 
 class Student(User):
+    SCHOOL_NUM = (
+        ('8', '8'),
+        ('9', '9'),
+        ('10', '10'),
+        ('11', '11'),
+    )
+
     school_id = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
+    school_num = models.CharField(_('School number'), choices=SCHOOL_NUM, default='8', max_length=2)
 
     class Meta:
         verbose_name = _('student')
@@ -171,3 +181,29 @@ class Student(User):
 
     def __str__(self):
         return self.get_full_name()
+
+
+class Publication(TimeStampedModel):
+    cover = models.ImageField(_('Upload image'), upload_to='publications/covers/')
+    title = models.CharField(_('Title'), max_length=125)
+    text = models.TextField(_('Description'))
+
+    class Meta:
+        verbose_name = _('Publication')
+        verbose_name_plural = _('Publications')
+
+    def __str__(self):
+        return self.title
+
+
+class PublicationImage(TimeStampedModel):
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE, verbose_name=_('Publication id'))
+    image = models.ImageField(_('Upload image'), upload_to='publications/images/',
+                            null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Image')
+        verbose_name_plural = _('Images')
+
+    def __str__(self):
+        return self.image.name
