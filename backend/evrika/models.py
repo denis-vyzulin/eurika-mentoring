@@ -1,6 +1,7 @@
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
+from os.path import getsize
 
+from django_extensions.db.models import TimeStampedModel
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
 
@@ -207,3 +208,19 @@ class PublicationImage(TimeStampedModel):
 
     def __str__(self):
         return self.image.name
+
+
+class Document(TimeStampedModel):
+    file = models.FileField(_('Upload file'), upload_to='documents/')
+    name = models.CharField(_('Filename'), max_length=125)
+
+    class Meta:
+        verbose_name = _('Document')
+        verbose_name_plural = _('Documents')
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def filesize(self):
+        return getsize(self.file)

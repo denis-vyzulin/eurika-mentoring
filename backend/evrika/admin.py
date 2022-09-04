@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import User, Mentor, Student, Publication, PublicationImage
+from .models import User, Mentor, Student, Publication, PublicationImage, Document
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -38,4 +38,28 @@ class PublicationAdmin(admin.ModelAdmin):
     search_fields = [
         'title',
     ]
+    readonly_fields = [
+        'created',
+        'modified',
+    ]
     inlines = [PublicationImageInline]
+
+
+@admin.register(Document)
+class DocumentAdmin(admin.ModelAdmin):
+    list_display = [
+        'name',
+        'created',
+        'modified',
+    ]
+    list_filter = [
+        'created',
+        'modified',
+    ]
+    search_fields = [
+        'name',
+    ]
+    readonly_fields = [
+        'created',
+        'modified',
+    ]
