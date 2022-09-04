@@ -224,3 +224,57 @@ class Document(TimeStampedModel):
     @property
     def filesize(self):
         return getsize(self.file)
+
+
+class Direction(TimeStampedModel):
+    name = models.CharField(_('Direction name'), max_length=125)
+
+    class Meta:
+        verbose_name = _('Direction')
+        verbose_name_plural = _('Directions')
+
+    def __str__(self):
+        return self.name
+
+
+class Project(TimeStampedModel):
+    title = models.CharField(_('Title'), max_length=125)
+    direction = models.ForeignKey(Direction, on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.TextField(_('Description'))
+
+    class Meta:
+        verbose_name = _('Project')
+        verbose_name_plural = _('Projects')
+
+    def __str__(self):
+        return self.title
+
+
+class ProjectFile(TimeStampedModel):
+    file = models.FileField(_('Upload file'), upload_to='projects/{{ request.user.name }}/documents/')
+    filename = models.CharField(_('Filename'), max_length=255, null=True, blank=True,
+                        help_text=_('This field change the filename displayed on the site'))
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_('Project id'))
+
+    class Meta:
+        verbose_name = _('File')
+        verbose_name_plural = _('Files')
+
+    def __str__(self):
+        return self.file.name
+
+    @classmethod
+    def name(self):
+        return self.file.name.split('/')[-1]
+
+    
+class ProjectStudent(TimeStampedModel):
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name=_('Student id'))
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_('Project id'))
+
+    class Meta:
+        verbose_name = _('Student')
+        verbose_name_plural = _('Students')
+
+    def __str__(self):
+        return self.student

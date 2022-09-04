@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from .models import User, Mentor, Student, Publication, PublicationImage, Document
-
+from .models import (Project, ProjectFile, User, Mentor, Student, Publication,
+                PublicationImage, Document, Direction, Project, ProjectFile,
+                ProjectStudent)
 
 class UserAdmin(admin.ModelAdmin):
     list_display = [
@@ -34,6 +35,7 @@ class PublicationAdmin(admin.ModelAdmin):
     ]
     list_filter = [
         'created',
+        'modified',
     ]
     search_fields = [
         'title',
@@ -63,3 +65,54 @@ class DocumentAdmin(admin.ModelAdmin):
         'created',
         'modified',
     ]
+
+
+class DirectionAdmin(admin.ModelAdmin):
+    list_display = [
+        'name',
+        'created',
+    ]
+    list_filter = [
+        'created',
+        'modified',
+    ]
+    search_fields = [
+        'name',
+    ]
+    readonly_fields = [
+        'created',
+        'modified',
+    ]
+
+
+class ProjectFileInline(admin.StackedInline):
+    model = ProjectFile
+    extra = 0
+
+class ProjectStudentInline(admin.StackedInline):
+    model = ProjectStudent
+    extra = 0
+    readonly_fields = [
+        'student',
+    ]
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = [
+        'title',
+        'direction',
+        'created',
+    ]
+    list_filter = [
+        'created',
+        'modified',
+    ]
+    search_fields = [
+        'title',
+        'direction',
+    ]
+    readonly_fields = [
+        'created',
+        'modified',
+    ]
+    inlines = [ProjectFileInline, ProjectStudentInline]
