@@ -116,3 +116,4 @@ class ProjectAdmin(admin.ModelAdmin):
         'modified',
     ]
     inlines = [ProjectFileInline, ProjectStudentInline]
+    

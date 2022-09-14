@@ -14,7 +14,7 @@ venv/
 .env
 
 # Media files #
-/media/*
+/backend/media/*
 /static/*
 
 # Node stuff #
