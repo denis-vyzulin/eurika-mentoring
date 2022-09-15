@@ -17,6 +17,8 @@ REQUIREMENT_APPS = [
 
 PROJECT_APPS = [
     'rest_framework',
+    'django_extensions',
+    'evrika.apps.EvrikaConfig',
 ]
 
 INSTALLED_APPS = REQUIREMENT_APPS + PROJECT_APPS
@@ -36,7 +38,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR.joinpath('templates')],
+        'DIRS': [
+            BASE_DIR / 'evrika/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,6 +84,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR.joinpath('assets'),
+    BASE_DIR / 'evrika/assets',
+]
 STATIC_ROOT = BASE_DIR.joinpath('static')
 
 MEDIA_URL = '/media/'

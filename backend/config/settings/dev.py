@@ -15,3 +15,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Model of Users
+AUTH_USER_MODEL = 'evrika.User'
