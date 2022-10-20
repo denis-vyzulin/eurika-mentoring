@@ -1,0 +1,17 @@
+.idea
+
+__pycache__
+.pytest_cache
+.cache
+*cache
+*pyc
+
+*.sql
+*.tar.gz
+
+docker
+docker-compose.yml
+Dockerfile
+
+.git
+README.md
