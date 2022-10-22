@@ -1,9 +1,28 @@
 version: '3'
 
 services:
+  django:
+    image: evrika_base_dev
+    container_name: evrika_django_dev
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    env_file:
+      - dev.env
+    command: sh -c "python backend/manage.py runserver 0.0.0.0:8001"
+    volumes:
+      - .:/evrika-mentoring
+    depends_on:
+      - postgres
+    ports:
+      - 8001:8001
+    tty: true
+    networks:
+      - evrika_net_dev
+
   postgres:
-    container_name: evrika_postgres_dev
     image: postgres:14.1-alpine
+    container_name: evrika_postgres_dev
     env_file:
       - dev.env
     ports:
