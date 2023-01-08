@@ -1,0 +1,12 @@
+FROM python:3.8-alpine
+ENV PYTHONUNBUFFERED 1
+
+ARG PROJECT=app
+
+RUN mkdir /$PROJECT
+COPY backend/requirements.txt /$PROJECT/
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r /$PROJECT/requirements.txt
+COPY . /$PROJECT
+
+WORKDIR /$PROJECT
+EXPOSE 8000

@@ -7,12 +7,16 @@ SECRET_KEY = env.get('DJANGO_SECRET_KEY', 'django-insecure-(d79$wx1^3g81p=1j$s9&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.get('DJANGO_DEBUG', True)
-ALLOWED_HOSTS = env.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1 localhost").split(" ")
+ALLOWED_HOSTS = env.get('DJANGO_ALLOWED_HOSTS', 'localhost 0.0.0.0 127.0.0.1').split(' ')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.get('POSTGRES_NAME', 'postgres'),
+        'USER': env.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': env.get('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': 'database',
+        'PORT': '5432',
     }
 }
 
