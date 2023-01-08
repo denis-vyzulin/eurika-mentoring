@@ -1,40 +1,49 @@
-version: '3'
+version: "3"
 
 services:
-  django:
-    image: evrika_base_dev
-    container_name: evrika_django_dev
-    build:
-      context: .
-      dockerfile: ./backend/Dockerfile
-    env_file:
-      - dev.env
-    command: sh -c "python backend/manage.py runserver 0.0.0.0:8001"
-    volumes:
-      - .:/evrika-mentoring
-    depends_on:
-      - postgres
-    ports:
-      - 8001:8001
-    tty: true
-    networks:
-      - evrika_net_dev
-
-  postgres:
+  database:
     image: postgres:14.1-alpine
     container_name: evrika_postgres_dev
     env_file:
       - dev.env
+    restart: unless-stopped
     ports:
       - "5432:5432"
+    networks:
+      - evrika_net_dev
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/dev/BackendDockerfile
+    container_name: evrika_django_dev
+    command: ./docker/dev/backend_setup.sh
+    env_file:
+      - dev.env
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - .:/app
+    depends_on:
+      - database
+    ports:
+      - "8000:8000"
+    tty: true
+    networks:
+      - evrika_net_dev
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/dev/FrontendDockerfile
+    container_name: evrika_vuejs_dev
+    command: ./docker/dev/frontend_setup.sh
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+    ports:
+      - "8080:8080"
     networks:
       - evrika_net_dev
 
 networks:
   evrika_net_dev:
-
-volumes:
-  postgres_data:
-    driver: local
