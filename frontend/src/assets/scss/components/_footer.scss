@@ -1,0 +1,107 @@
+.footer {
+    margin-top: 40px;
+    background-color: var(--background-area);
+
+    &__navigation,
+    &__sepline,
+    &__info {
+        width: 100%;
+    }
+
+    &__sepline {
+        height: 2px;
+        width: 100%;
+        background-color: var(--border-base);
+    }
+}
+
+.footer-tline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 24px;
+    padding-bottom: 24px;
+
+    &__heading {
+        color: var(--heading);
+        font-weight: 500;
+        @include adaptive_font_size(20, 16);
+    }
+}
+
+.fmenu {
+    &__item {
+        display: inline-block;
+        padding: 4px 18px;
+        color: var(--paragraph);
+        text-decoration: none;
+        @include adaptive_font_size(16, 14);
+        transition: color .3s;
+
+        &:hover {
+            color: var(--primary);
+        }
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+}
+
+.footer-bline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    padding-bottom: 16px;
+
+    &__copyright {
+        @include adaptive_font_size(14, 13);
+    }
+    &__links {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
+
+.flinks {
+    &__item {
+        position: relative;
+        padding: 4px;
+        margin-right: 20px;
+        color: var(--paragraph);
+        text-decoration: none;
+        @include adaptive_font_size(13, 12);
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            height: 1px;
+            width: 0;
+            background-color: var(--paragraph);
+            transition: left .3s,
+                        width .3s;
+        }
+
+        &:hover::before {
+            left: 0;
+            width: 100%;
+        }
+    }
+
+    &__social {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+        width: 20px;
+        margin-left: 24px;
+    }
+}

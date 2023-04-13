@@ -1,0 +1,60 @@
+*,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    z-index: inherit;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    color: var(--paragraph);
+    line-height: 1.5;
+    font-family: 'Fira Sans', sans-serif;
+    text-rendering: optimizeSpeed;
+    background-color: var(--background);
+  }
+  
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ul[class],
+  ol[class],
+  li,
+  figure,
+  figcaption,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+  
+  ul[class],
+  ol[class] {
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  a:not([class]) {
+    color: var(--secondary);
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
+  }
+  
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  
+  input,
+  button,
+  textarea,
+  select {
+    outline: none;
+    border: none;
+  }

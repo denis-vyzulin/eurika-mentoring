@@ -1,20 +1,26 @@
 <template>
 
   <header class="header">
-    <div class="header__inner header-content _container">
+    <div class="header__inner _container">
 
-      <img src="@/assets/logo.png" alt="" class="header-content__logo logo">
-      <!-- / end of logotype -->
+      <div class="header__open-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-      <nav class="header-content__navigation menu">
+      <nav class="header__navigation menu">
+        <router-link class="menu__item" to="/home">
+          Главная
+        </router-link>
         <router-link class="menu__item" to="/projects">
           Проекты
         </router-link>
-        <router-link class="menu__item" to="/news">
-          Новости
+        <router-link class="menu__item" to="/articles">
+          Блог
         </router-link>
-        <router-link class="menu__item" to="/documents">
-          Документы
+        <router-link class="menu__item" to="/announcements">
+          Объявления
         </router-link>
         <router-link class="menu__item" to="/contacts">
           Контакты
@@ -22,12 +28,12 @@
       </nav>
       <!-- / end of main navigation -->
 
-      <div class="header-content__authbtn authbtn">
-        <router-link class="authbtn__item" to="/contacts">
+      <div class="header__authbtn authbtn">
+        <router-link class="authbtn__item" to="/account/sign-up">
           Регистрация
         </router-link>
-        <router-link class="authbtn__item authbtn-item" to="/contacts">
-          <svg class="authbtn-item__svg-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <router-link class="authbtn__item authbtn__item--outlined" to="/account/sign-in">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M12.5 2.5H15.8333C16.2754 2.5 16.6993 2.67559 17.0118 2.98816C17.3244 3.30072 17.5 3.72464 17.5 4.16667V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H12.5"
               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -48,39 +54,42 @@
   <!-- / end of main content side -->
 
   <footer class="footer">
-    <div class="footer__inner footer-content _container">
+    <div class="footer__inner _container">
 
-      <div class="footer-content__navigation footer-tline">
+      <div class="footer__navigation footer-tline">
         <p class="footer-tline__heading">
           НОУ «Эврика»
         </p>
-        <div class="footer-tline__menu f-menu">
-          <router-link class="f-menu__item" to="/projects">
+        <div class="footer-tline__menu fmenu">
+          <router-link class="fmenu__item" to="/home">
+            Главная
+          </router-link>
+          <router-link class="fmenu__item" to="/projects">
             Проекты
           </router-link>
-          <router-link class="f-menu__item" to="/news">
-            Новости
+          <router-link class="fmenu__item" to="/articles">
+            Блог
           </router-link>
-          <router-link class="f-menu__item" to="/documents">
-            Документы
+          <router-link class="fmenu__item" to="/announcements">
+            Объявления
           </router-link>
-          <router-link class="f-menu__item" to="/contacts">
+          <router-link class="fmenu__item" to="/contacts">
             Контакты
           </router-link>
         </div>
       </div>
       <!-- / end of topside -->
 
-      <div class="footer-content__sepline"></div>
+      <div class="footer__sepline"></div>
       <!-- / end of sepline -->
 
-      <div class="footer-content__info footer-bline">
+      <div class="footer__info footer-bline">
         <p class="footer-bline__copyright">
-          © 2022, Научное общество учащихся «Эврика». Все права защищены.
+          ©2023, Научное общество учащихся «Эврика».
         </p>
         <div class="footer-bline__links flinks">
           <router-link class="flinks__item" to="/sitemap">
-            Контакты
+            Карта сайта
           </router-link>
           <router-link class="flinks__item" to="/terms-of-use">
             Условия использования
@@ -100,7 +109,8 @@
               <path
                 d="M10.0001 18.3333C14.6025 18.3333 18.3334 14.6023 18.3334 9.99996C18.3334 5.39759 14.6025 1.66663 10.0001 1.66663C5.39771 1.66663 1.66675 5.39759 1.66675 9.99996C1.66675 14.6023 5.39771 18.3333 10.0001 18.3333Z"
                 stroke="#5851E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M1.66675 10H18.3334" stroke="#5851E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M1.66675 10H18.3334" stroke="#5851E2" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
               <path
                 d="M10.0001 1.66663C12.0845 3.94859 13.269 6.90999 13.3334 9.99996C13.269 13.0899 12.0845 16.0513 10.0001 18.3333C7.91568 16.0513 6.73112 13.0899 6.66675 9.99996C6.73112 6.90999 7.91568 3.94859 10.0001 1.66663V1.66663Z"
                 stroke="#5851E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -108,7 +118,7 @@
           </a>
         </div>
       </div>
-      <!-- / end of bottomside -->
+      <!-- / end of bottom side -->
 
     </div>
   </footer>
@@ -120,234 +130,10 @@
 // Import FiraSans-font from GoogleFonts
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap');
 
-// ==> Colour Palette
-$background-base: #EFEFF3;
-$border-base: #EBEBF3;
-$color-primary: #5048E5;
-$color-text: #6B6A85;
-$color-headings: #1D1C39;
-
-// ==> Normalize
-body {
-  margin: 0;
-  padding: 0;
-  color: $color-text;
-  line-height: 1.5;
-  font-family: 'Fira Sans', sans-serif;
-  background-color: $background-base;
-}
-
-// ==> Container
-._container {
-  display: block;
-  max-width: 1240px;
-  width: 100%;
-  margin: 0 auto;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-// ==> Header
-.header {
-  width: 100%;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  background-color: white;
-
-  &__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-.logo {
-  flex: 0 0 40px;
-  width: 36px;
-}
-.menu {
-  flex: 0 0 calc(100% - 360px);
-  &__item {
-    padding: 8px;
-    color: $color-text;
-    text-decoration: none;
-    transition: color .3s;
-
-    &:hover {
-      color: $color-primary;
-    }
-
-    &:not(:last-child) {
-      margin-right: 32px;
-    }
-  }
-}
-.authbtn {
-  flex: 0 0 210px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &__item {
-    display: inline-block;
-    color: $color-text;
-    text-decoration: none;
-
-    &:first-child {
-      margin-right: 24px;
-      transition: color .3s;
-
-      &:hover {
-        color: $color-primary;
-      }
-    }
-
-    &:last-child {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 22px 6px 18px;
-      color: white;
-      font-weight: 500;
-      border-radius: 12px;
-      border: 2px solid $color-primary;
-      background-color: $color-primary;
-      transition: color .3s,
-                  background-color .3s;
-
-      &:hover {
-        color: $color-primary;
-        font-weight: 400;
-        background-color: white;
-
-        & .authbtn-item__svg-icon {
-          path { stroke: $color-primary }
-        }
-      }
-    }
-  }
-}
-.authbtn-item {
-  &__svg-icon {
-    width: 16px;
-    margin-right: 8px;
-
-    path {
-      stroke: white;
-      transition: stroke .3s;
-    }
-  }
-}
-
-// ==> Footer
-.footer {
-  padding-top: 24px;
-  padding-bottom: 16px;
-  background-color: white;
-}
-.footer-content {
-  &__navigation,
-  &__info {
-    width: 100%;
-  }
-  &__sepline {
-    height: 2px;
-    width: 100%;
-    margin-top: 24px;
-    margin-bottom: 16px;
-    background-color: $border-base;
-  }
-}
-
-// ==> Footer line with navigation
-.footer-tline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  &__heading {
-    margin: 0;
-    color: $color-headings;
-    font-size: 20px;
-    font-weight: 500;
-  }
-}
-.f-menu {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  &__item {
-    display: block;
-    padding: 8px;
-    color: $color-text;
-    text-decoration: none;
-    transition: color .3s;
-
-    &:not(:last-child) {
-      margin-right: 24px;
-    }
-
-    &:hover {
-      color: $color-primary;
-    }
-  }
-}
-
-// ==> Footer line with technical info
-.footer-bline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  &__copyright {
-    margin: 0;
-    font-size: 14px;
-  }
-}
-.flinks {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  &__item {
-    display: block;
-    position: relative;
-    margin-right: 24px;
-    padding: 8px;
-    color: $color-text;
-    font-size: 12px;
-    text-decoration: none;
-
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 4px;
-      height: 1px;
-      width: 0;
-      background-color: $color-text;
-      transition: width .3s;
-    }
-
-    &:hover::before {
-      width: 100%;
-    }
-  }
-
-  &__social {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-      height: 20px;
-      width: 20px;
-    }
-
-    &:not(:last-child) {
-      margin-left: 16px;
-      margin-right: 24px;
-    }
-  }
-}
+// Import base styles
+@import '@/assets/scss/styles.scss';
 </style>
+
+<script>
+document.title = 'Эврика – наставничество | Веб-сервис для поиска проектов'
+</script>

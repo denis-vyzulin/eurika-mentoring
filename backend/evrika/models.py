@@ -76,11 +76,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         }
     )
     # password field supplied by AbstractBaseUser
-
     username = models.CharField(_('Name'), max_length=30)
     surname = models.CharField(_('Surname'), max_length=30)
     patronymic = models.CharField(_('Patronymic'), max_length=30)
-    
+
     # last_login field supplied by AbstractBaseUser
     is_active = models.BooleanField(
         _('Active'),
@@ -103,25 +102,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'surname', 'patronymic']
+    REQUIRED_FIELDS = ['username', 'surname']
 
     class Meta:
         verbose_name = _('User')
         verbose_name_plural = _('Users')
-        
+
     def get_full_name(self):
         '''
         Return username, surname and patronymic with a spaces in between.
         '''
         full_name = '%s %s %s' % (self.username, self.surname, self.patronymic)
         return full_name.strip()
-    
+
     def get_short_name(self):
         '''
         Return the short name for the user.
         '''
         return self.username
-    
+
     def email_user(self, subject, message, from_email=None, **kwargs):
         '''
         Send an email to this user.
@@ -267,7 +266,7 @@ class ProjectFile(TimeStampedModel):
     def name(self):
         return self.file.name.split('/')[-1]
 
-    
+
 class ProjectStudent(TimeStampedModel):
     student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name=_('Student id'))
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_('Project id'))
