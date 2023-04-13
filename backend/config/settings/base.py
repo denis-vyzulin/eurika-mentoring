@@ -13,11 +13,11 @@ REQUIREMENT_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_extensions',
 ]
 
 PROJECT_APPS = [
-    'rest_framework',
-    'django_extensions',
     'evrika.apps.EvrikaConfig',
 ]
 
@@ -97,3 +97,11 @@ MEDIA_ROOT = BASE_DIR.joinpath('media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# REST framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}

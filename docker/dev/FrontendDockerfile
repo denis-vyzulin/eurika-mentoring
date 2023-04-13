@@ -7,6 +7,5 @@ EXPOSE 8080
 
 RUN npm install -g npm
 RUN npm install -g @vue/cli@5.0.8
-RUN npm install
 
 WORKDIR /$PROJECT
