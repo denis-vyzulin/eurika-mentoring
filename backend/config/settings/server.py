@@ -22,3 +22,12 @@ DATABASES = {
 
 # Model of Users
 AUTH_USER_MODEL = 'evrika.User'
+
+
+# Corsheaders settings
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    'https://127.0.0.1:8080',
+    'https://127.0.0.1:8000',
+)

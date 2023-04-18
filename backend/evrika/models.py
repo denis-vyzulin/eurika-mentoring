@@ -38,14 +38,14 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(
-        self, email, username, surname, patronymic, password=None,
+        self, email, username, surname, patronymic=None, password=None,
         **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(email, username, surname, patronymic, password, **extra_fields)
 
     def create_superuser(
-        self, email, username, surname, patronymic, password=None,
+        self, email, username, surname, patronymic=None, password=None,
         **extra_fields):
         '''
         Creates and saves a superuser with the given email, username, surname,
@@ -78,7 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # password field supplied by AbstractBaseUser
     username = models.CharField(_('Name'), max_length=30)
     surname = models.CharField(_('Surname'), max_length=30)
-    patronymic = models.CharField(_('Patronymic'), max_length=30)
+    patronymic = models.CharField(_('Patronymic'), max_length=30, null=True, blank=True)
 
     # last_login field supplied by AbstractBaseUser
     is_active = models.BooleanField(
@@ -132,7 +132,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class University(models.Model):
-    name = models.CharField(_('Name of university'), max_length=128, db_index=True)
+    name = models.CharField(_('Name of university'), max_length=128,
+                            db_index=True)
 
     class Meta:
         verbose_name = _('University')
@@ -143,7 +144,8 @@ class University(models.Model):
 
 
 class Mentor(User):
-    university_id = models.ForeignKey(University, on_delete=models.SET_NULL, null=True)
+    university_id = models.ForeignKey(University, on_delete=models.SET_NULL,
+                                      null=True, verbose_name=_('Unversity'))
 
     class Meta:
         verbose_name = _('Mentor')
@@ -154,7 +156,7 @@ class Mentor(User):
 
 
 class School(models.Model):
-    name = models.CharField(_('Name of school'), max_length=128)
+    name = models.CharField(_('School name'), max_length=128)
 
     class Meta:
         verbose_name = _('School')
@@ -165,72 +167,55 @@ class School(models.Model):
 
 
 class Student(User):
-    SCHOOL_NUM = (
+    CLASS_NUM = (
+        ('5', '5'),
+        ('6', '6'),
+        ('7', '7'),
         ('8', '8'),
         ('9', '9'),
         ('10', '10'),
         ('11', '11'),
     )
 
-    school_id = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
-    school_num = models.CharField(_('School number'), choices=SCHOOL_NUM, default='8', max_length=2)
+    school_id = models.ForeignKey(School, on_delete=models.SET_NULL,
+                                  null=True, verbose_name=_('School'))
+    class_num = models.CharField(_('Class number'), choices=CLASS_NUM,
+                                 default='7', max_length=2)
 
     class Meta:
-        verbose_name = _('student')
-        verbose_name_plural = _('students')
+        verbose_name = _('Student')
+        verbose_name_plural = _('Students')
 
     def __str__(self):
         return self.get_full_name()
 
 
-class Publication(TimeStampedModel):
-    cover = models.ImageField(_('Upload image'), upload_to='publications/covers/')
+class Article(TimeStampedModel):
+    ARTICLE_TYPES = (
+        ('News', 'Новости'),
+        ('Study', 'Обучение'),
+        ('Results', 'Результаты'),
+    )
+
+    type = models.CharField(_('Choose type'), choices=ARTICLE_TYPES, default='News', max_length=40)
+    cover = models.ImageField(_('Upload image'), upload_to='articles/covers/')
     title = models.CharField(_('Title'), max_length=125)
     text = models.TextField(_('Description'))
 
     class Meta:
-        verbose_name = _('Publication')
-        verbose_name_plural = _('Publications')
+        verbose_name = _('Article')
+        verbose_name_plural = _('Articles')
 
     def __str__(self):
         return self.title
 
 
-class PublicationImage(TimeStampedModel):
-    publication = models.ForeignKey(Publication, on_delete=models.CASCADE, verbose_name=_('Publication id'))
-    image = models.ImageField(_('Upload image'), upload_to='publications/images/',
-                            null=True, blank=True)
+class Subject(TimeStampedModel):
+    name = models.CharField(_('Subject name'), max_length=125)
 
     class Meta:
-        verbose_name = _('Image')
-        verbose_name_plural = _('Images')
-
-    def __str__(self):
-        return self.image.name
-
-
-class Document(TimeStampedModel):
-    file = models.FileField(_('Upload file'), upload_to='documents/')
-    name = models.CharField(_('Filename'), max_length=125)
-
-    class Meta:
-        verbose_name = _('Document')
-        verbose_name_plural = _('Documents')
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def filesize(self):
-        return getsize(self.file)
-
-
-class Direction(TimeStampedModel):
-    name = models.CharField(_('Direction name'), max_length=125)
-
-    class Meta:
-        verbose_name = _('Direction')
-        verbose_name_plural = _('Directions')
+        verbose_name = _('Subject')
+        verbose_name_plural = _('Subjects')
 
     def __str__(self):
         return self.name
@@ -238,8 +223,16 @@ class Direction(TimeStampedModel):
 
 class Project(TimeStampedModel):
     title = models.CharField(_('Title'), max_length=125)
-    direction = models.ForeignKey(Direction, on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField(_('Description'))
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True,
+                                blank=True, verbose_name=_('Subject'))
+    is_display = models.BooleanField(_('Display on the site'))
+    is_complete = models.BooleanField(_('Complete status'))
+    users_view = models.PositiveIntegerField(_('Project views'), editable=False)
+    author = models.ForeignKey(Mentor, on_delete=models.SET_NULL, null=True,
+                               blank=True, verbose_name=_('Author'))
+    implementer = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True,
+                                    blank=True, verbose_name=_('Implementer'))
 
     class Meta:
         verbose_name = _('Project')
@@ -249,15 +242,30 @@ class Project(TimeStampedModel):
         return self.title
 
 
-class ProjectFile(TimeStampedModel):
-    file = models.FileField(_('Upload file'), upload_to='projects/{{ request.user.name }}/documents/')
-    filename = models.CharField(_('Filename'), max_length=255, null=True, blank=True,
-                        help_text=_('This field change the filename displayed on the site'))
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_('Project id'))
+class Response(TimeStampedModel):
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, null=False,
+                                   blank=False, verbose_name=_('Project'))
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE, null=False,
+                                   blank=False, verbose_name=_('Student'))
+    message = models.TextField(_('Message'))
 
     class Meta:
-        verbose_name = _('File')
-        verbose_name_plural = _('Files')
+        verbose_name = _('Response')
+        verbose_name_plural = _('Responses')
+
+    def __str__(self):
+        return self.student_id.get_full_name
+
+
+class ProjectFile(TimeStampedModel):
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, null=False,blank=False, verbose_name=_('Project'))
+    file = models.FileField(_('Upload file'), upload_to='projects/{{request.user.name}}/documents/')
+    filename = models.CharField(_('Filename'), max_length=255, null=True, blank=True,
+                        help_text=_('This field change the filename displayed on the site'))
+
+    class Meta:
+        verbose_name = _('Project File')
+        verbose_name_plural = _('Project Files')
 
     def __str__(self):
         return self.file.name
@@ -267,13 +275,13 @@ class ProjectFile(TimeStampedModel):
         return self.file.name.split('/')[-1]
 
 
-class ProjectStudent(TimeStampedModel):
-    student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name=_('Student id'))
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_('Project id'))
+class Announcement(TimeStampedModel):
+    ANNOUNCEMENT_TYPES = (
+        ('Online', 'Онлайн'),
+        ('Offline', 'Оффлайн'),
+    )
 
-    class Meta:
-        verbose_name = _('Student')
-        verbose_name_plural = _('Students')
-
-    def __str__(self):
-        return self.student
+    type = models.CharField(_('Announcement\'s type'), choices=ANNOUNCEMENT_TYPES, default='Online', max_length=80)
+    text = models.TextField(_('Description'))
+    venue = models.CharField(_('Venue'), max_length=510)
+    date_venue = models.DateTimeField(_('Date of venue'))

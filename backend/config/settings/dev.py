@@ -20,3 +20,8 @@ DATABASES = {
 
 # Model of Users
 AUTH_USER_MODEL = 'evrika.User'
+
+
+# Corsheaders settings
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True

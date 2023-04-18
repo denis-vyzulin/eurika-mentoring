@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import SignInView from '@/views/account/SignInView.vue'
+// import SignInView from '@/views/account/SignInView.vue'
 
 const routes = [
   {
@@ -22,11 +22,9 @@ const routes = [
     name: 'account',
     children: [
       {
-        path: 'sign-in',
-        component: SignInView
-      },
-      {
-        path: 'sign-up'
+        path: 'sign-up',
+        name: 'sign-up',
+        component: () => import('@/views/account/SignUpView.vue')
       }
     ]
   }

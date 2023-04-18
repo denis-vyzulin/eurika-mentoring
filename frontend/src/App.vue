@@ -29,10 +29,10 @@
       <!-- / end of main navigation -->
 
       <div class="header__authbtn authbtn">
-        <router-link class="authbtn__item" to="/account/sign-up">
+        <router-link class="authbtn__item" v-if="$route.name !== 'sign-up'" to="/account/sign-up">
           Регистрация
         </router-link>
-        <router-link class="authbtn__item authbtn__item--outlined" to="/account/sign-in">
+        <button class="authbtn__item authbtn__item--outlined" @click="$refs.LoginPopup.openPopup()">
           <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M12.5 2.5H15.8333C16.2754 2.5 16.6993 2.67559 17.0118 2.98816C17.3244 3.30072 17.5 3.72464 17.5 4.16667V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H12.5"
@@ -42,7 +42,7 @@
             <path d="M12.5 10H2.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           Вход
-        </router-link>
+        </button>
       </div>
       <!-- / end of auth buttons -->
 
@@ -124,6 +124,66 @@
   </footer>
   <!-- / end of footer -->
 
+  <PopupWindow ref="LoginPopup">
+    <template v-slot:popup_content>
+      <h3 class="login-content__heading">
+        Авторизация на сайте
+      </h3>
+      <p class="login-content__subtitle">
+        Еще нет аккаунта?
+        <router-link to="/account/sign-up" @click="$refs.LoginPopup.closePopup()">
+          Зарегистрироваться
+        </router-link>
+      </p>
+      <form action="" class="login-content__form login-form">
+        <p class="login-content__error _alert-box _hidden" id="login_error">
+          Неверный логин или пароль!
+        </p>
+        <label for="auth_email" class="login-form__field _field">
+          <p class="login-form__suptitle _field__title">
+            Адрес почты
+          </p>
+          <input type="email" name="auth_email" ref="login_email" class="login-form__input _field__input" placeholder="ivanov-ivan@ivanovich.ru">
+        </label>
+        <label for="auth_pwd" class="login-form__field _field">
+          <p class="login-form__suptitle _field__title">
+            <span>Пароль</span>
+            <router-link class="login-form__recovery" to="/account/recovery" @click="$refs.LoginPopup.closePopup()">
+              Забыли пароль?
+            </router-link>
+          </p>
+          <input type="password" name="auth_pwd" ref="login_pwd" class="login-form__input _field__input" placeholder="************">
+        </label>
+        <button class="login-form__btn _btn _btn--primary" type="button" @click="handleSubmit()">
+          Войти
+        </button>
+      </form>
+      <div class="login-content__sepline">
+        <span>через соцсети</span>
+      </div>
+      <div class="login-content__socials-auth social-auth">
+        <a href="#" class="social-auth__link social-auth__link--google">
+          <svg class="social-auth__icon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.87601 10.068C6.66326 10.6899 6.55513 11.3427 6.55601 12C6.55601 12.734 6.68801 13.437 6.93201 14.086C7.23612 14.8972 7.71381 15.6321 8.33165 16.2393C8.94949 16.8466 9.69256 17.3115 10.5089 17.6015C11.3252 17.8916 12.195 17.9998 13.0575 17.9185C13.92 17.8372 14.7543 17.5684 15.502 17.131H15.503C16.6811 16.4404 17.5862 15.3661 18.067 14.088H12.72V10.132H22.325C22.5734 11.4405 22.5585 12.7854 22.281 14.088C21.8002 16.3399 20.5569 18.3568 18.761 19.798C16.9872 21.2264 14.7774 22.0035 12.5 22C10.783 22.001 9.09464 21.5597 7.59765 20.7187C6.10065 19.8778 4.84547 18.6655 3.95302 17.1986C3.06058 15.7317 2.56095 14.0597 2.50227 12.3437C2.44359 10.6276 2.82785 8.92542 3.61801 7.401C4.46098 5.77291 5.7354 4.40796 7.30189 3.4554C8.86838 2.50284 10.6666 1.99936 12.5 2C14.926 2 17.151 2.864 18.883 4.302L15.643 6.954C14.884 6.48164 14.0283 6.18643 13.1395 6.09034C12.2507 5.99424 11.3517 6.09972 10.5093 6.39894C9.66691 6.69816 8.90279 7.18342 8.27376 7.81864C7.64472 8.45386 7.16697 9.2227 6.87601 10.068Z"/>
+          </svg>
+          Google
+        </a>
+        <a href="#" class="social-auth__link social-auth__link--vk">
+          <svg class="social-auth__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23.456 5.784C23.186 6.633 22.822 7.372 22.366 8.043L22.385 8.013C21.937 8.75967 21.402 9.62233 20.78 10.601C20.2467 11.3737 19.9643 11.7737 19.933 11.801C19.795 11.974 19.699 12.186 19.666 12.419L19.665 12.426C19.692 12.638 19.79 12.823 19.933 12.961L20.333 13.407C22.473 15.6063 23.6767 17.1223 23.944 17.955C23.979 18.047 23.999 18.153 23.999 18.264C23.999 18.458 23.937 18.637 23.832 18.784L23.834 18.781C23.658 18.962 23.412 19.074 23.14 19.074C23.11 19.074 23.079 19.073 23.05 19.07H23.054H20.423C20.422 19.07 20.42 19.07 20.418 19.07C20.081 19.07 19.771 18.952 19.528 18.756L19.531 18.758C19.177 18.467 18.862 18.152 18.58 17.81L18.571 17.798C18.1103 17.2773 17.7017 16.839 17.345 16.483C16.157 15.3537 15.2803 14.789 14.715 14.789C14.694 14.787 14.67 14.786 14.645 14.786C14.48 14.786 14.326 14.837 14.199 14.924L14.202 14.922C14.098 15.052 14.035 15.22 14.035 15.401C14.035 15.437 14.037 15.471 14.042 15.506V15.502C14.015 15.816 13.999 16.181 13.999 16.55C13.999 16.669 14.001 16.787 14.004 16.905V16.888V18.047C14.014 18.094 14.02 18.148 14.02 18.203C14.02 18.445 13.91 18.661 13.738 18.804L13.737 18.805C13.35 18.982 12.898 19.086 12.421 19.086C12.319 19.086 12.219 19.081 12.12 19.072L12.133 19.073C10.559 19.043 9.09899 18.582 7.85799 17.805L7.89299 17.825C6.38199 16.907 5.12999 15.712 4.17599 14.3L4.14899 14.258C3.24299 13.056 2.39799 11.698 1.67799 10.266L1.60799 10.112C1.18699 9.31 0.750991 8.324 0.374991 7.31L0.314991 7.125C0.161991 6.669 0.0509907 6.139 0.00499072 5.59L0.00299072 5.565C0.00299072 5.05967 0.300324 4.807 0.894991 4.807H3.52499C3.54899 4.805 3.57699 4.804 3.60599 4.804C3.85399 4.804 4.08299 4.889 4.26399 5.032L4.26199 5.03C4.46199 5.249 4.60999 5.518 4.68299 5.818L4.68599 5.83C5.16999 7.197 5.68299 8.345 6.27299 9.445L6.20599 9.308C6.68799 10.278 7.22099 11.113 7.82899 11.884L7.80599 11.853C8.33932 12.5077 8.75532 12.835 9.05399 12.835C9.06299 12.836 9.07399 12.836 9.08599 12.836C9.23399 12.836 9.36299 12.756 9.43299 12.636L9.43399 12.634C9.50799 12.444 9.55099 12.223 9.55099 11.993C9.55099 11.944 9.54899 11.895 9.54499 11.847V11.853V7.974C9.52399 7.517 9.41199 7.09 9.22499 6.707L9.23299 6.726C9.10899 6.462 8.95999 6.234 8.78299 6.031L8.78599 6.035C8.62199 5.871 8.50999 5.656 8.47499 5.416L8.47399 5.41C8.47399 5.24 8.55199 5.087 8.67399 4.987L8.67499 4.986C8.79599 4.875 8.95799 4.808 9.13499 4.808H9.14299H13.289C13.311 4.805 13.336 4.804 13.362 4.804C13.557 4.804 13.732 4.892 13.848 5.03L13.849 5.031C13.952 5.219 14.013 5.444 14.013 5.682C14.013 5.72 14.011 5.757 14.008 5.794V5.789V10.962C14.006 10.986 14.005 11.014 14.005 11.042C14.005 11.226 14.056 11.399 14.144 11.546L14.142 11.542C14.215 11.65 14.337 11.72 14.475 11.72H14.476C14.652 11.708 14.812 11.65 14.947 11.558L14.944 11.56C15.216 11.373 15.45 11.16 15.653 10.919L15.657 10.914C16.264 10.228 16.824 9.47 17.312 8.664L17.351 8.594C17.695 8.024 18.067 7.322 18.404 6.601L18.466 6.454L18.912 5.562C19.067 5.116 19.483 4.802 19.972 4.802C19.991 4.802 20.01 4.802 20.029 4.803H20.026H22.657C23.3677 4.803 23.6343 5.13 23.457 5.784H23.456Z"/>
+          </svg>
+          Вконтакте
+        </a>
+        <a href="#" class="social-auth__link social-auth__link--tg">
+          <svg class="social-auth__icon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.9392 4.62225L19.7705 19.566C19.5312 20.6205 18.908 20.883 18.0222 20.3865L13.1937 16.8285L10.8642 19.0695C10.6062 19.3275 10.391 19.5428 9.89374 19.5428L10.241 14.6258L19.1892 6.54C19.5785 6.1935 19.1045 6.00075 18.5847 6.348L7.52224 13.314L2.75974 11.823C1.72399 11.4998 1.70524 10.7873 2.97574 10.29L21.6035 3.11325C22.466 2.79 23.2205 3.30525 22.9392 4.623V4.62225Z"/>
+          </svg>
+          Telegram
+        </a>
+      </div>
+    </template>
+  </PopupWindow>
+  <!-- / end of login popup -->
 </template>
 
 <style lang="scss">
@@ -135,5 +195,62 @@
 </style>
 
 <script>
+// Connect all components
+import PopupWindow from '@/components/PopupWindow.vue'
+import { mapMutations } from 'vuex'
+import axios from 'axios'
+
+export default {
+  name: 'App',
+  components: {
+    PopupWindow
+  },
+  data () {
+    return {
+      formValidate: {
+        email: '',
+        password: ''
+      },
+      token: ''
+    }
+  },
+  methods: {
+    ...mapMutations(['changeLogin']),
+    handleSubmit () {
+      this.formValidate.email = this.$refs.login_email.value
+      this.formValidate.password = this.$refs.login_pwd.value
+      if (
+        this.formValidate.email === '' ||
+        this.formValidate.password === ''
+      ) {
+        alert('Login failed!')
+      } else {
+        const headers = {
+          'Content-type': 'application/json; charset=utf-8'
+        }
+        axios.post('http://127.0.0.1:8000/login/', this.formValidate, headers)
+          .then((res) => {
+            console.log(res.data)
+            this.changeLogin({ token: res.data })
+            this.token = res.data
+            localStorage.setItem('token', this.token)
+            axios.post('http://127.0.0.1:8000/api/v1/users/', this.formValidate, headers)
+              .then((userInfo) => {
+                console.log(userInfo.data)
+              })
+          })
+          // .catch(function (error) {
+          //   if (error.response) {
+          //     console.log(error.response)
+          //   } else {
+          //     // ...
+          //   }
+          // })
+      }
+    }
+  }
+}
+
 document.title = 'Эврика – наставничество | Веб-сервис для поиска проектов'
+console.log()
 </script>
