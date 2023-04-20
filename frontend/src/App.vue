@@ -239,13 +239,6 @@ export default {
                 console.log(userInfo.data)
               })
           })
-          // .catch(function (error) {
-          //   if (error.response) {
-          //     console.log(error.response)
-          //   } else {
-          //     // ...
-          //   }
-          // })
       }
     }
   }
