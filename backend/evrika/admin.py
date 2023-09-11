@@ -1,21 +1,9 @@
 from django.contrib import admin
 
-from .models import (User, Mentor, Student, Article, Subject,
-                     Project, ProjectFile, Response, Announcement, University, School)
-from .admin_user import UserMentorAdmin, UserStudentAdmin
+from .models import (Project, ProjectFile, User, Mentor, Student, Article,
+                     Subject, Project, ProjectFile, Response, Announcement)
 
-
-@admin.register(University)
-class UniversityAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
-@admin.register(School)
-class SchoolAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
-class UserCustomAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
     list_display = [
         'email',
         'username',
@@ -29,62 +17,46 @@ class UserCustomAdmin(admin.ModelAdmin):
     ]
     ordering = ['-is_active', '-date_joined', 'username']
 
-admin.site.register(User, UserCustomAdmin)
-
-
-@admin.register(Mentor)
-class MentorAdmin(UserMentorAdmin):
-    list_display = [
-        'email',
-        'username',
-        'patronymic',
-        'surname',
-        'university_id'
-    ]
-    ordering = ['-date_joined', 'username']
-    readonly_fields = ['date_joined', 'last_login']
-
-
-@admin.register(Student)
-class StudentAdmin(UserStudentAdmin):
-    list_display = [
-        'email',
-        'username',
-        'patronymic',
-        'surname',
-        'get_school',
-        'class_num'
-    ]
-    search_fields = ['email', 'surname']
-    list_filter = ['class_num', 'school_id__name']
-    ordering = ['-date_joined', 'username']
-    readonly_fields = ['date_joined', 'last_login']
-
-    def get_school(self, obj):
-        return obj.school_id.name
-
-    get_school.short_description = 'School'
+admin.site.register(User, UserAdmin)
+admin.site.register(Mentor, UserAdmin)
+admin.site.register(Student, UserAdmin)
 
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = [
         'title',
-        'type'
+        'created',
     ]
-    list_filter = ['type']
+    list_filter = [
+        'created',
+        'modified',
+    ]
     search_fields = [
         'title',
+    ]
+    readonly_fields = [
+        'created',
+        'modified',
     ]
 
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = [
-        'name'
+        'name',
+        'created',
+    ]
+    list_filter = [
+        'created',
+        'modified',
     ]
     search_fields = [
         'name',
+    ]
+    readonly_fields = [
+        'created',
+        'modified',
     ]
 
 
@@ -95,33 +67,34 @@ class ProjectFileInline(admin.StackedInline):
         'project_id',
     ]
 
-
 class ResponseInline(admin.StackedInline):
     model = Response
     extra = 0
     readonly_fields = [
         'project_id',
+        'student_id',
     ]
-
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = [
         'title',
         'subject',
-        'is_display',
-        'is_complete',
-        'author',
-        'implementer'
+        'created',
     ]
     list_filter = [
-        'is_display',
-        'is_complete'
+        'created',
+        'modified',
     ]
     search_fields = [
         'title',
         'subject',
-        'description'
+    ]
+    readonly_fields = [
+        'author',
+        'implementer',
+        'created',
+        'modified',
     ]
     inlines = [ProjectFileInline, ResponseInline]
 
@@ -138,4 +111,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
         'type',
         'date_venue',
     ]
-    search_fields = ['text']
+    readonly_fields = [
+        'created',
+        'modified',
+    ]

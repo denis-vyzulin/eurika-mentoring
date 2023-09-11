@@ -1,0 +1,102 @@
+@import '@/styles/mixins';
+.footer {
+  padding-top: 16px;
+  padding-bottom: 8px;
+  background-color: var(--el-background_color);
+
+  &__topline,
+  &__bottomline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__separator {
+    height: 2px;
+    width: 100%;
+    margin: 16px auto 8px;
+    background-color: var(--border_color);
+  }
+}
+
+.footer-tl {
+  &__name {
+    color: var(--heading_color);
+    font-family: var(--heading_font-family);
+    font-weight: 500;
+    @include adaptive_font_size(20, 16);
+  }
+}
+
+.footer-menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  &__item {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-decoration: none;
+
+    &:not(:first-child) {
+      padding-left: 16px;
+    }
+
+    &:not(:last-child) {
+      padding-right: 16px;
+    }
+
+    &:hover {
+      color: var(--primary_color);
+      transition: color .3s;
+    }
+  }
+}
+
+.footer-bl {
+  &__copyright {
+    @include adaptive_font_size(14, 13);
+  }
+
+  &__links {
+    @include adaptive_font_size(13, 12);
+  }
+}
+
+.footer-links {
+  display: flex;
+  align-self: center;
+  justify-content: flex-end;
+
+  &__item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:not(:last-child) {
+      padding-right: 12px;
+    }
+
+    &:not(:first-child) {
+      padding-left: 12px;
+    }
+  }
+
+  &__icon {
+    height: 20px;
+    width: 20px;
+
+    &--fill > path {
+      fill: var(--primary_color);
+    }
+
+    &--stroke > path {
+      stroke: var(--primary_color);
+    }
+  }
+}

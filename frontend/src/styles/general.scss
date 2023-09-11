@@ -1,0 +1,13 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+@import '@/styles/general/core/normalize';
+@import '@/styles/general/core/typography';
+@import '@/styles/general/core/skeleton';
+@import '@/styles/general/core/themes';
+
+@import '@/styles/general/elements/buttons';
+
+body {
+  background-color: var(--background_color);
+}

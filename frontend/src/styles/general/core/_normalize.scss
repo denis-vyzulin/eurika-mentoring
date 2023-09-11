@@ -1,0 +1,63 @@
+// Border-box for all elements
+*,
+*::before,
+*::after {
+    z-index: inherit;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+// Removing left padding and markers
+// of lists if there is a class
+ul[class],
+ol[class] {
+    list-style: none;
+}
+
+// Removing default margin
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+// Changing body styles
+body {
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+
+// Links without classes get default values
+a:not([class]) {
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
+}
+
+// Changing styles of all images
+img {
+    display: block;
+    max-width: 100%;
+}
+
+// Removing borders and outline of
+// form fields
+input,
+button,
+textarea,
+select {
+    outline: none;
+    border: none;
+}

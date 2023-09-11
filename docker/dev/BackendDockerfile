@@ -3,16 +3,10 @@ ENV PYTHONUNBUFFERED 1
 
 ARG PROJECT=app
 
-RUN apk update && apk add python3-dev \
-                        gcc \
-                        libc-dev
+RUN mkdir /$PROJECT
+COPY backend/requirements.txt /$PROJECT/
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r /$PROJECT/requirements.txt
+COPY . /$PROJECT
 
 WORKDIR /$PROJECT
-
-COPY backend/requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r /$PROJECT/requirements.txt
-
-COPY backend/ .
-
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

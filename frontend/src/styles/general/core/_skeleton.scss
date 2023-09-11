@@ -1,0 +1,8 @@
+._container {
+    $paddings: #{$innerMargin + px};
+
+    max-width: #{$maxWidthContainer + px};
+    margin: 0 auto;
+    padding-left: $paddings;
+    padding-right: $paddings;
+}

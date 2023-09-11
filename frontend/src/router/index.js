@@ -3,30 +3,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/',
-    name: 'intro',
-    component: () => import('@/views/IntroView.vue')
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('@/views/AboutView.vue')
-  },
-  {
-    path: '/brand',
-    name: 'brand',
-    component: () => import('@/views/BrandView.vue')
-  },
-  {
-    path: '/account',
-    name: 'account',
-    children: [
-      {
-        path: 'sign-up',
-        name: 'sign-up',
-        component: () => import('@/views/account/SignUpView.vue')
-      }
-    ]
+    // path: 'address',
+    // name: 'CamelCase',
+    // component: () => import('path_to_view')
   }
 ]
 

@@ -1,0 +1,37 @@
+// => Headings
+h1, h2, h3,
+h4, h5 {
+    color: var(--headings_color);
+    font-family: var(--heading_font-family);
+    font-weight: 700;
+}
+
+// => Child text elements
+a,
+i,
+b,
+q,
+em,
+mark,
+strong {
+    color: inherit;
+    font: inherit;
+    font-family: var(--plain-text_font-family);
+    line-height: inherit;
+}
+
+// => Parent text elements
+p,
+a,
+li,
+th,
+td,
+button,
+form,
+input,
+textarea,
+blockquote {
+    color: var(--plain-text_color);
+    font-family: var(--plain-text_font-family);
+    @include adaptive_font_size(16, 14);
+}

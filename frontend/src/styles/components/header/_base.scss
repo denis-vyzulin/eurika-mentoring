@@ -1,0 +1,84 @@
+.header {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: var(--el-background_color);
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  &__item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-decoration: none;
+
+    &:not(:first-child) {
+      padding-left: 16px;
+    }
+
+    &:not(:last-child) {
+      padding-right: 16px;
+    }
+
+    &:hover {
+      color: var(--primary_color);
+      transition: color .3s;
+    }
+  }
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  &__item {
+    padding: 8px 24px 8px 20px;
+    text-decoration: none;
+    transition: color .3s;
+
+    &:hover {
+      color: var(--primary_color);
+    }
+
+    &--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary_color);
+      border: 2px solid var(--primary_color);
+      border-radius: 12px;
+      background: transparent;
+      transition: background-color .3s,
+                  color .3s;
+
+      svg {
+        height: 20px;
+        width: 20px;
+        margin-right: 8px;
+
+        path {
+          stroke: var(--primary_color);
+          transition: stroke .3s;
+        }
+      }
+
+      &:hover {
+        color: white;
+        background-color: var(--primary_color);
+
+        svg > path {
+          stroke: white;
+        }
+      }
+    }
+  }
+}

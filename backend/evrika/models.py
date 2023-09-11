@@ -1,6 +1,8 @@
 from django.db import models
+from os.path import getsize
 
 from django_extensions.db.models import TimeStampedModel
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
 
 from django.utils import timezone
@@ -9,11 +11,13 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
-    def _create_user(self, email, username, surname, patronymic, password=None, **extra_fields):
-        """
+    def _create_user(
+        self, email, username, surname, patronymic, password=None,
+        **extra_fields):
+        '''
         Creates and saves a User with the given email, name, surname,
         patronymic and password.
-        """
+        '''
         if not email:
             raise ValueError(_('Users must have an email address.'))
         if not username:
@@ -40,11 +44,13 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(email, username, surname, patronymic, password, **extra_fields)
 
-    def create_superuser(self, email, username, surname, patronymic=None, password=None, **extra_fields):
-        """
+    def create_superuser(
+        self, email, username, surname, patronymic=None, password=None,
+        **extra_fields):
+        '''
         Creates and saves a superuser with the given email, username, surname,
         patronymic and password.
-        """
+        '''
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -222,7 +228,7 @@ class Project(TimeStampedModel):
                                 blank=True, verbose_name=_('Subject'))
     is_display = models.BooleanField(_('Display on the site'))
     is_complete = models.BooleanField(_('Complete status'))
-    users_view = models.PositiveIntegerField(_('Project views'), editable=False, default=0)
+    users_view = models.PositiveIntegerField(_('Project views'), editable=False)
     author = models.ForeignKey(Mentor, on_delete=models.SET_NULL, null=True,
                                blank=True, verbose_name=_('Author'))
     implementer = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True,
@@ -248,17 +254,14 @@ class Response(TimeStampedModel):
         verbose_name_plural = _('Responses')
 
     def __str__(self):
-        return str(self.student_id)
+        return self.student_id.get_full_name
 
 
 class ProjectFile(TimeStampedModel):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE,
-                                   null=False,
-                                   blank=False,
-                                   verbose_name=_('Project'))
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, null=False,blank=False, verbose_name=_('Project'))
     file = models.FileField(_('Upload file'), upload_to='projects/{{request.user.name}}/documents/')
     filename = models.CharField(_('Filename'), max_length=255, null=True, blank=True,
-                                help_text=_('This field change the filename displayed on the site'))
+                        help_text=_('This field change the filename displayed on the site'))
 
     class Meta:
         verbose_name = _('Project File')
